@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        int[][] matrix = {{1, 1, 0}, {0, 0, 1}, {1, 0, 0}};
+        int[][] matrix = {{0, 0, 1}, {1, 1, 0}, {0, 1, 1}};
         Matrix matrix1 = new Matrix(matrix, 3);
         Random rand = new Random();
         List<Matrix> group = new ArrayList<Matrix>();
