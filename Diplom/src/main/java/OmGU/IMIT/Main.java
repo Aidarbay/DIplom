@@ -7,14 +7,12 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         int size = 0;
-        int[][] matrix = {{1, 1, 0}, {1, 1, 1}, {0, 1, 0}};
-        Matrix matrix1 = new Matrix(matrix, 3);
+        Matrix matrix1;
         Random rand = new Random();
         List<Matrix> group = new ArrayList<>();
 
-        List<Matrix> firstConjugate = new ArrayList<Matrix>();
-        List<Matrix> secondConjugate = new ArrayList<>();
-        List<List<Matrix>> conjugate = new ArrayList<>();
+        List<Matrix> conjugatedMatrix = new ArrayList<Matrix>();
+        List<Matrix> otherMatrix = new ArrayList<>();
 
         while (group.size() != 168) {
             int[][] matrix2 = {{rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
@@ -23,30 +21,50 @@ public class Main {
             Matrix other = new Matrix(matrix2, 3);
             if (other.determinant() == 1 && !group.contains(other)) {
                 group.add(other);
-                //System.out.println(other.toString());
+                otherMatrix.add(other);
             }
         }
+        /*while (size != 168) {
+            matrix1 = otherMatrix.get(0);
+            System.out.println(matrix1.toString());
 
-        while (size < 168) {
-            firstConjugate.clear();
-            for (Matrix h :
-                    group) {
-                Matrix newMatrix = Matrix.multiply(Matrix.multiply(h.transpose().inversion(), matrix1), h.inversion());
-                if (!firstConjugate.contains(newMatrix)) {
-                    firstConjugate.add(newMatrix);
-                }
-            }
-            size += firstConjugate.size();
-            System.out.println(firstConjugate.size());
-            conjugate.add(firstConjugate);
+            conjugatedMatrix.clear();
 
             for (Matrix h :
                     group) {
-                if (!firstConjugate.contains(h)) {
+                for (Matrix g :
+                        group) {
+
+                    Matrix newMatrix = Matrix.multiply(Matrix.multiply(Matrix.multiply(Matrix.multiply
+                            (g.inversion(), h), g), matrix1), h.inversion());
+                    if (!conjugatedMatrix.contains(newMatrix)) {
+                        conjugatedMatrix.add(newMatrix);
+                    }
                 }
             }
-            System.out.println(secondConjugate.size());
-        }
 
+            size += conjugatedMatrix.size();
+            System.out.println(conjugatedMatrix.size() + "\n");
+
+            for (Matrix h :
+                    conjugatedMatrix) {
+                otherMatrix.remove(h);
+            }
+        }*/
+
+        boolean flag = false;
+
+        while(!flag) {
+
+            conjugatedMatrix.clear();
+
+            for (Matrix h :
+                    group) {
+                for (Matrix g :
+                        group) {
+
+                }
+            }
+        }
     }
 }
