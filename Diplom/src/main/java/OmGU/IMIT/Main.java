@@ -8,6 +8,7 @@ public class Main {
     public static void main(String[] args) {
         int size = 0;
         Matrix matrix1;
+        Matrix matrixH;
         Random rand = new Random();
         List<Matrix> group = new ArrayList<>();
 
@@ -24,7 +25,9 @@ public class Main {
                 otherMatrix.add(other);
             }
         }
-        /*while (size != 168) {
+        //matrixH = otherMatrix.get(0);
+        //System.out.println(matrixH.toString() + "\n____________\n");
+        while (size != 168) {
             matrix1 = otherMatrix.get(0);
             System.out.println(matrix1.toString());
 
@@ -32,16 +35,22 @@ public class Main {
 
             for (Matrix h :
                     group) {
-                for (Matrix g :
-                        group) {
-
-                    Matrix newMatrix = Matrix.multiply(Matrix.multiply(Matrix.multiply(Matrix.multiply
-                            (g.inversion(), h), g), matrix1), h.inversion());
-                    if (!conjugatedMatrix.contains(newMatrix)) {
-                        conjugatedMatrix.add(newMatrix);
-                    }
+                Matrix newMatrix = Matrix.multiply(Matrix.multiply(h, matrix1), h.inversion());
+                if (!conjugatedMatrix.contains(newMatrix)) {
+                    conjugatedMatrix.add(newMatrix);
+                    System.out.println(newMatrix.toString());
                 }
             }
+
+            /*for (Matrix h :
+                    group) {
+                Matrix newMatrix = Matrix.multiply(Matrix.multiply(Matrix.multiply(Matrix.multiply(matrixH.inversion(), h),
+                        matrixH), matrix1), h.inversion());
+                if (!conjugatedMatrix.contains(newMatrix)) {
+                    conjugatedMatrix.add(newMatrix);
+                    System.out.println(newMatrix.toString());
+                }
+            }*/
 
             size += conjugatedMatrix.size();
             System.out.println(conjugatedMatrix.size() + "\n");
@@ -50,9 +59,9 @@ public class Main {
                     conjugatedMatrix) {
                 otherMatrix.remove(h);
             }
-        }*/
+        }
 
-        boolean flag = false;
+        /*boolean flag = false;
 
         while(!flag) {
 
@@ -65,6 +74,6 @@ public class Main {
 
                 }
             }
-        }
+        }*/
     }
 }
