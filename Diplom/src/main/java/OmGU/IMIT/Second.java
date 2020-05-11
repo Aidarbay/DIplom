@@ -18,7 +18,7 @@ public class Second {
         List<Matrix> thirdOrderMatrix = new ArrayList<>();
         Map<Matrix, String> otherMatrix = new HashMap<>();
         Map<Matrix, String> diffMatrix = new HashMap<>();
-
+        List<Integer> hash = new ArrayList<>();
         while (group.size() != 168) {
             int[][] matrix = {{rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
                     {rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
@@ -26,8 +26,13 @@ public class Second {
             Matrix other = new Matrix(matrix, 3);
             if (other.determinant() == 1 && !group.contains(other)) {
                 group.add(other);
+                if(!hash.contains(other.hashCode())) {
+                    hash.add(other.hashCode());
+                }
             }
         }
+
+        System.out.println(hash.size() + "\n");
         for (Matrix elem :
                 group) {
             if (unitMatrix.equals(Matrix.multiply(elem, elem)) && !unitMatrix.equals(elem)) {
@@ -41,6 +46,7 @@ public class Second {
             for (Matrix thirdElem :
                     thirdOrderMatrix) {
                 otherMatrix.clear();
+                diffMatrix.clear();
                 otherMatrix.put(secondElem, "2");
                 otherMatrix.put(thirdElem, "3");
                 otherMatrix.put(Matrix.multiply(secondElem, secondElem), "22");

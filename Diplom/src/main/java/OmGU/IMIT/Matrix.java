@@ -1,7 +1,6 @@
 package OmGU.IMIT;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class Matrix {
     private int[][] matrix;
@@ -14,10 +13,10 @@ public class Matrix {
 
     Matrix(Matrix oldMatrix) {
         size = oldMatrix.getSize();
-        matrix  = new int[oldMatrix.getSize()][oldMatrix.getSize()];
-        for(int i = 0; i < size; i++) {
-            for(int j = 0; j < size; j++) {
-                matrix[i][j] = oldMatrix.getElement(i,j);
+        matrix = new int[oldMatrix.getSize()][oldMatrix.getSize()];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                matrix[i][j] = oldMatrix.getElement(i, j);
             }
         }
     }
@@ -59,24 +58,24 @@ public class Matrix {
         for (int k = 0; k < size; k++) {
 
             for (int j = 0; j < size; j++) {
-                if (newMatrix.getElement(j,k) == 1) {
+                if (newMatrix.getElement(j, k) == 1) {
                     index = j;
                 }
             }
-            if (k != index && newMatrix.getElement(k,k) != 1) {
+            if (k != index && newMatrix.getElement(k, k) != 1) {
                 for (int j = 0; j < size; j++) {
-                    element = newMatrix.getElement(k,j);
-                    newMatrix.setElement(k,j, newMatrix.getElement(index,j));
-                    newMatrix.setElement(index,j, element);
+                    element = newMatrix.getElement(k, j);
+                    newMatrix.setElement(k, j, newMatrix.getElement(index, j));
+                    newMatrix.setElement(index, j, element);
                     element = E[k][j];
                     E[k][j] = E[index][j];
                     E[index][j] = element;
                 }
             }
             for (int i = 0; i < size; i++) {
-                if (i != k && newMatrix.getElement(i,k) == 1) {
+                if (i != k && newMatrix.getElement(i, k) == 1) {
                     for (int j = 0; j < size; j++) {
-                        newMatrix.setElement(i,j,(newMatrix.getElement(i,j) + newMatrix.getElement(k,j)) % 2);
+                        newMatrix.setElement(i, j, (newMatrix.getElement(i, j) + newMatrix.getElement(k, j)) % 2);
                         E[i][j] = (E[i][j] + E[k][j]) % 2;
                     }
                 }
@@ -125,8 +124,14 @@ public class Matrix {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(size);
-        result = 31 * result + Arrays.hashCode(matrix);
+        int result = 0;
+        int[] arr = {matrix[0][0], matrix[0][1], matrix[0][2], matrix[1][0], matrix[1][1], matrix[1][2], matrix[2][0],
+                matrix[2][1], matrix[2][2]};
+        for (int i = 0; i < size * 3; i++) {
+            if (arr[i] == 1) {
+                result += Math.pow(2,i);
+            }
+        }
         return result;
     }
 
