@@ -1,25 +1,32 @@
 package OmGU.IMIT;
 
 import java.util.Objects;
+
 /**
  * Class for saved two elements in pair
- *
- * @param <T> type first element
- * @param <U> type second element
  */
-public final class Pair<T, U> {
+public final class Pair {
 
-    private final T first;
-    private final U second;
+    private final Matrix first;
+    private final Matrix second;
 
     /**
      * Basic constructor saved type
-     * @param first type first element
+     *
+     * @param first  type first element
      * @param second type second element
      */
-    public Pair(final T first, final U second) {
+    Pair(final Matrix first, final Matrix second) {
         this.first = first;
         this.second = second;
+    }
+
+    Matrix getFirst() {
+        return first;
+    }
+
+    public Matrix getSecond() {
+        return second;
     }
 
     @Override
@@ -30,7 +37,7 @@ public final class Pair<T, U> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Pair<?, ?> pair = (Pair<?, ?>) o;
+        Pair pair = (Pair) o;
         return Objects.equals(first, pair.first) &&
                 Objects.equals(second, pair.second);
     }

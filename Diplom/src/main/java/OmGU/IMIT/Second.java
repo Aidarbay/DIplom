@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Second {
     public static void main(String[] args) {
+        int size = 0;
         int[][] unitArray = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
         Matrix matrix1;
         Matrix matrix2;
@@ -13,12 +14,13 @@ public class Second {
         List<Matrix> group = new ArrayList<>();
         boolean addElem = true;
 
-        Map<Pair<Matrix, Matrix>, Map<Matrix, String>> generatingMatrix = new HashMap<>();
+        Map<Pair, Map<Matrix, String>> generatingMatrix = new HashMap<>();
         List<Matrix> secondOrderMatrix = new ArrayList<>();
         List<Matrix> thirdOrderMatrix = new ArrayList<>();
-        Map<Matrix, String> otherMatrix = new HashMap<>();
-        Map<Matrix, String> diffMatrix = new HashMap<>();
-        List<Integer> hash = new ArrayList<>();
+        List<Pair> pairGeneratingMatrix = new ArrayList<>();
+        List<Matrix> conjugatedMatrix = new ArrayList<Matrix>();
+        List<Matrix> otherMatr = new ArrayList<Matrix>();
+        //полностью заполняю группу 168 элементами
         while (group.size() != 168) {
             int[][] matrix = {{rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
                     {rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
@@ -26,38 +28,35 @@ public class Second {
             Matrix other = new Matrix(matrix, 3);
             if (other.determinant() == 1 && !group.contains(other)) {
                 group.add(other);
-                if(!hash.contains(other.hashCode())) {
-                    hash.add(other.hashCode());
-                }
             }
         }
-
-        System.out.println(hash.size() + "\n");
+        //заполняю два множества элементов с порядками 2 и 3
         for (Matrix elem :
                 group) {
             if (unitMatrix.equals(Matrix.multiply(elem, elem)) && !unitMatrix.equals(elem)) {
                 secondOrderMatrix.add(elem);
-            } else if (unitMatrix.equals(Matrix.multiply(Matrix.multiply(elem, elem), elem)) && !unitMatrix.equals(elem)) {
+            } else if (unitMatrix.equals(Matrix.multiply(Matrix.multiply(elem, elem), elem)) &&
+                    !unitMatrix.equals(elem)) {
                 thirdOrderMatrix.add(elem);
             }
         }
+
         for (Matrix secondElem :
                 secondOrderMatrix) {
             for (Matrix thirdElem :
                     thirdOrderMatrix) {
-                otherMatrix.clear();
-                diffMatrix.clear();
-                otherMatrix.put(secondElem, "2");
-                otherMatrix.put(thirdElem, "3");
-                otherMatrix.put(Matrix.multiply(secondElem, secondElem), "22");
-                if (!otherMatrix.containsKey(Matrix.multiply(thirdElem, thirdElem))) {
-                    otherMatrix.put(Matrix.multiply(thirdElem, thirdElem), "33");
+                Map<Matrix, String> newMatrix = new HashMap<>();
+                newMatrix.put(secondElem, "2");
+                newMatrix.put(thirdElem, "3");
+                newMatrix.put(Matrix.multiply(secondElem, secondElem), "22");
+                if (!newMatrix.containsKey(Matrix.multiply(thirdElem, thirdElem))) {
+                    newMatrix.put(Matrix.multiply(thirdElem, thirdElem), "33");
                 }
-                diffMatrix.putAll(otherMatrix);
-                while (otherMatrix.size() < 168 && addElem) {
+                Map<Matrix, String> diffMatrix = new HashMap<>(newMatrix);
+                while (newMatrix.size() < 168 && addElem) {
                     addElem = false;
                     for (Map.Entry<Matrix, String> mainElem :
-                            otherMatrix.entrySet()) {
+                            newMatrix.entrySet()) {
                         matrix1 = Matrix.multiply(mainElem.getKey(), secondElem);
                         matrix2 = Matrix.multiply(mainElem.getKey(), thirdElem);
                         if (!diffMatrix.containsKey(matrix1)) {
@@ -69,19 +68,65 @@ public class Second {
                             addElem = true;
                         }
                     }
-                    otherMatrix.putAll(diffMatrix);
+                    newMatrix.putAll(diffMatrix);
                 }
-                if (otherMatrix.size() == 168) {
-                    generatingMatrix.put(new Pair<Matrix, Matrix>(secondElem, thirdElem), otherMatrix);
-                    System.out.println(secondElem.toString());
-                    System.out.println(thirdElem.toString());
+                if (newMatrix.size() == 168) {
+                    generatingMatrix.put(new Pair(secondElem, thirdElem), newMatrix);
+                    pairGeneratingMatrix.add(new Pair(secondElem, thirdElem));
                 }
                 addElem = true;
+            }
+        }
+        System.out.println(generatingMatrix.size() + "\n");
 
+        Pair generate = pairGeneratingMatrix.get(0);
+        for (Pair replace :
+                pairGeneratingMatrix) {
+            if (!generate.equals(replace)) {
+                size = 0;
+                otherMatr.addAll(group);
+                System.out.println(generate.getFirst().toString() + generate.getSecond().toString());
+                System.out.println(replace.getFirst().toString() + replace.getSecond().toString());
+                while (size != 168) {
+                    matrix1 = otherMatr.get(0);
+
+                    conjugatedMatrix.clear();
+
+                    for (Matrix h :
+                            group) {
+                        String path = generatingMatrix.get(replace).get(h);
+
+                        Matrix conversion;
+                        if (path.charAt(0) == '2') {
+                            conversion = generate.getFirst();
+                        } else {
+                            conversion = generate.getSecond();
+                        }
+                        for (int i = 1; i < path.length(); i++) {
+                            if (path.charAt(i) == '2') {
+                                conversion = Matrix.multiply(conversion, generate.getFirst());
+                            } else {
+                                conversion = Matrix.multiply(conversion, generate.getSecond());
+                            }
+                        }
+
+                        Matrix newMatrix = Matrix.multiply(Matrix.multiply(conversion, matrix1), h.inversion());
+                        if (!conjugatedMatrix.contains(newMatrix)) {
+                            conjugatedMatrix.add(newMatrix);
+                        }
+                    }
+
+                    size += conjugatedMatrix.size();
+                    System.out.println(conjugatedMatrix.size() + "\n");
+
+                    for (Matrix h :
+                            conjugatedMatrix) {
+                        otherMatr.remove(h);
+                    }
+                }
             }
         }
 
-        System.out.println(generatingMatrix.size() + "\n");
 
     }
 }
