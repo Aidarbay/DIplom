@@ -1,6 +1,5 @@
 package OmGU.IMIT;
 
-import javax.sound.sampled.LineUnavailableException;
 import java.util.*;
 
 public class Second {
@@ -20,6 +19,7 @@ public class Second {
         List<Pair> pairGeneratingMatrix = new ArrayList<>();
         List<Matrix> conjugatedMatrix = new ArrayList<Matrix>();
         List<Matrix> otherMatr = new ArrayList<Matrix>();
+
         //полностью заполняю группу 168 элементами
         while (group.size() != 168) {
             int[][] matrix = {{rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
@@ -33,14 +33,13 @@ public class Second {
         //заполняю два множества элементов с порядками 2 и 3
         for (Matrix elem :
                 group) {
-            if (unitMatrix.equals(Matrix.multiply(elem, elem)) && !unitMatrix.equals(elem)) {
+            if (elem.getOrder() == 2) {
                 secondOrderMatrix.add(elem);
-            } else if (unitMatrix.equals(Matrix.multiply(Matrix.multiply(elem, elem), elem)) &&
-                    !unitMatrix.equals(elem)) {
+            } else if (elem.getOrder() == 3) {
                 thirdOrderMatrix.add(elem);
             }
         }
-
+        //нахождение пар порождающих элементов и их комбинации для получения всех элементов группы
         for (Matrix secondElem :
                 secondOrderMatrix) {
             for (Matrix thirdElem :
@@ -77,8 +76,8 @@ public class Second {
                 addElem = true;
             }
         }
-        System.out.println(generatingMatrix.size() + "\n");
 
+        //нахождение классов скрученной сопряженности
         Pair generate = pairGeneratingMatrix.get(0);
         for (Pair replace :
                 pairGeneratingMatrix) {
@@ -96,13 +95,8 @@ public class Second {
                             group) {
                         String path = generatingMatrix.get(replace).get(h);
 
-                        Matrix conversion;
-                        if (path.charAt(0) == '2') {
-                            conversion = generate.getFirst();
-                        } else {
-                            conversion = generate.getSecond();
-                        }
-                        for (int i = 1; i < path.length(); i++) {
+                        Matrix conversion = unitMatrix;
+                        for (int i = 0; i < path.length(); i++) {
                             if (path.charAt(i) == '2') {
                                 conversion = Matrix.multiply(conversion, generate.getFirst());
                             } else {
@@ -113,6 +107,7 @@ public class Second {
                         Matrix newMatrix = Matrix.multiply(Matrix.multiply(conversion, matrix1), h.inversion());
                         if (!conjugatedMatrix.contains(newMatrix)) {
                             conjugatedMatrix.add(newMatrix);
+                            System.out.println(newMatrix.getOrder());
                         }
                     }
 

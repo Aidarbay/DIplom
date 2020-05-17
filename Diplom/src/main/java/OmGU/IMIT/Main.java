@@ -25,32 +25,32 @@ public class Main {
                 otherMatrix.add(other);
             }
         }
-        //matrixH = otherMatrix.get(0);
-        //System.out.println(matrixH.toString() + "\n____________\n");
+        matrixH = otherMatrix.get(0);
+        System.out.println(matrixH.toString() + "\n____________\n");
         while (size != 168) {
             matrix1 = otherMatrix.get(0);
             System.out.println(matrix1.toString());
 
             conjugatedMatrix.clear();
 
-            for (Matrix h :
+            /*for (Matrix h :
                     group) {
                 Matrix newMatrix = Matrix.multiply(Matrix.multiply(h, matrix1), h.inversion());
                 if (!conjugatedMatrix.contains(newMatrix)) {
                     conjugatedMatrix.add(newMatrix);
                     System.out.println(newMatrix.toString());
                 }
-            }
+            }*/
 
-            /*for (Matrix h :
+            for (Matrix h :
                     group) {
                 Matrix newMatrix = Matrix.multiply(Matrix.multiply(Matrix.multiply(Matrix.multiply(matrixH.inversion(), h),
                         matrixH), matrix1), h.inversion());
                 if (!conjugatedMatrix.contains(newMatrix)) {
                     conjugatedMatrix.add(newMatrix);
-                    System.out.println(newMatrix.toString());
+                    System.out.println(newMatrix.getOrder());
                 }
-            }*/
+            }
 
             size += conjugatedMatrix.size();
             System.out.println(conjugatedMatrix.size() + "\n");

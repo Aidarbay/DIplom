@@ -129,10 +129,22 @@ public class Matrix {
                 matrix[2][1], matrix[2][2]};
         for (int i = 0; i < size * 3; i++) {
             if (arr[i] == 1) {
-                result += Math.pow(2,i);
+                result += Math.pow(2, i);
             }
         }
         return result;
+    }
+
+    int getOrder() {
+        int order = 1;
+        int[][] unitArray = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+        Matrix unitMatrix = new Matrix(unitArray, 3);
+        Matrix newMatrix = this;
+        while (!newMatrix.equals(unitMatrix)) {
+            newMatrix = multiply(newMatrix, this);
+            order++;
+        }
+        return order;
     }
 
     private int getSize() {
