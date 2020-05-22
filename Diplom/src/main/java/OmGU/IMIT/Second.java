@@ -5,6 +5,8 @@ import java.util.*;
 public class Second {
     public static void main(String[] args) {
         int size = 0;
+        int sizeList = -1;
+        int secondOrder = 0, thirdOrder = 0, fourthOrder = 0, seventhOrder = 0;
         int[][] unitArray = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
         Matrix matrix1;
         Matrix matrix2;
@@ -17,7 +19,7 @@ public class Second {
         List<Matrix> secondOrderMatrix = new ArrayList<>();
         List<Matrix> thirdOrderMatrix = new ArrayList<>();
         List<Pair> pairGeneratingMatrix = new ArrayList<>();
-        List<Matrix> conjugatedMatrix = new ArrayList<Matrix>();
+        List<List<Matrix>> conjugatedMatrix = new ArrayList<>();
         List<Matrix> otherMatr = new ArrayList<Matrix>();
 
         //полностью заполняю группу 168 элементами
@@ -79,17 +81,29 @@ public class Second {
 
         //нахождение классов скрученной сопряженности
         Pair generate = pairGeneratingMatrix.get(0);
+        System.out.println(generate.getFirst().toString() + generate.getSecond().toString());
+        System.out.println("Обратные: " + "\n");
+        System.out.println(generate.getFirst().inversion().toString() + generate.getSecond().inversion().toString());
+        System.out.println("Транспонированые: " + "\n");
+        System.out.println(generate.getFirst().transpose().toString() + generate.getSecond().transpose().toString());
         for (Pair replace :
                 pairGeneratingMatrix) {
             if (!generate.equals(replace)) {
                 size = 0;
+                sizeList = -1;
                 otherMatr.addAll(group);
-                System.out.println(generate.getFirst().toString() + generate.getSecond().toString());
+                conjugatedMatrix.clear();
                 System.out.println(replace.getFirst().toString() + replace.getSecond().toString());
+                System.out.println("Обратные: " + "\n");
+                System.out.println(
+                        replace.getFirst().inversion().toString() + replace.getSecond().inversion().toString());
+                System.out.println("Транспонированые: " + "\n");
+                System.out.println(
+                        replace.getFirst().transpose().toString() + replace.getSecond().transpose().toString());
                 while (size != 168) {
                     matrix1 = otherMatr.get(0);
-
-                    conjugatedMatrix.clear();
+                    sizeList++;
+                    conjugatedMatrix.add(sizeList, new ArrayList<Matrix>());
 
                     for (Matrix h :
                             group) {
@@ -105,18 +119,43 @@ public class Second {
                         }
 
                         Matrix newMatrix = Matrix.multiply(Matrix.multiply(conversion, matrix1), h.inversion());
-                        if (!conjugatedMatrix.contains(newMatrix)) {
-                            conjugatedMatrix.add(newMatrix);
-                            System.out.println(newMatrix.getOrder());
+                        if (!conjugatedMatrix.get(sizeList).contains(newMatrix)) {
+                            conjugatedMatrix.get(sizeList).add(newMatrix);
                         }
                     }
 
-                    size += conjugatedMatrix.size();
-                    System.out.println(conjugatedMatrix.size() + "\n");
+                    size += conjugatedMatrix.get(sizeList).size();
 
-                    for (Matrix h :
+                    for (List<Matrix> h :
                             conjugatedMatrix) {
-                        otherMatr.remove(h);
+                        for (Matrix m :
+                                h) {
+                            otherMatr.remove(m);
+                        }
+                    }
+
+                }
+                for (List<Matrix> h :
+                        conjugatedMatrix) {
+                    for (Matrix m :
+                            h) {
+                        if (conjugatedMatrix.size() == 4) {
+                            if (m.getOrder() == 2) {
+                                secondOrder++;
+                            } else if (m.getOrder() == 3) {
+                                thirdOrder++;
+                            } else if (m.getOrder() == 4) {
+                                fourthOrder++;
+                            } else if (m.getOrder() == 7) {
+                                seventhOrder++;
+                            }
+                        }
+                    }
+                    if (conjugatedMatrix.size() == 4) {
+                        System.out.println("Второй порядок = " + secondOrder + " Третий порядок = " + thirdOrder +
+                                " Четвертый порядок = " + fourthOrder + " Седьмой порядок = " + seventhOrder +
+                                " Размер = " + h.size() + "\n");
+                        secondOrder = thirdOrder = fourthOrder = seventhOrder = 0;
                     }
                 }
             }

@@ -60,20 +60,5 @@ public class Main {
                 otherMatrix.remove(h);
             }
         }
-
-        /*boolean flag = false;
-
-        while(!flag) {
-
-            conjugatedMatrix.clear();
-
-            for (Matrix h :
-                    group) {
-                for (Matrix g :
-                        group) {
-
-                }
-            }
-        }*/
     }
 }
