@@ -4,9 +4,6 @@ import java.util.*;
 
 public class Second {
     public static void main(String[] args) {
-        int size = 0;
-        int sizeList = -1;
-        int secondOrder = 0, thirdOrder = 0, fourthOrder = 0, seventhOrder = 0;
         int[][] unitArray = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
         Matrix matrix1;
         Matrix matrix2;
@@ -15,14 +12,14 @@ public class Second {
         List<Matrix> group = new ArrayList<>();
         boolean addElem = true;
 
-        Map<Pair, Map<Matrix, String>> generatingMatrix = new HashMap<>();
+        Map<Pair, Map<Matrix, String>> generatorsAndPaths = new HashMap<>();
         List<Matrix> secondOrderMatrix = new ArrayList<>();
         List<Matrix> thirdOrderMatrix = new ArrayList<>();
-        List<Pair> pairGeneratingMatrix = new ArrayList<>();
+        List<Pair> pairGenerators = new ArrayList<>();
         List<List<Matrix>> conjugatedMatrix = new ArrayList<>();
-        List<Matrix> otherMatr = new ArrayList<Matrix>();
+        List<Matrix> otherMatrices = new ArrayList<Matrix>();
 
-        //полностью заполняю группу 168 элементами
+        //нахожу группу невырожденных матриц 3*3 над полем (0, 1)
         while (group.size() != 168) {
             int[][] matrix = {{rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
                     {rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
@@ -46,69 +43,54 @@ public class Second {
                 secondOrderMatrix) {
             for (Matrix thirdElem :
                     thirdOrderMatrix) {
-                Map<Matrix, String> newMatrix = new HashMap<>();
-                newMatrix.put(secondElem, "2");
-                newMatrix.put(thirdElem, "3");
-                newMatrix.put(Matrix.multiply(secondElem, secondElem), "22");
-                if (!newMatrix.containsKey(Matrix.multiply(thirdElem, thirdElem))) {
-                    newMatrix.put(Matrix.multiply(thirdElem, thirdElem), "33");
-                }
-                Map<Matrix, String> diffMatrix = new HashMap<>(newMatrix);
-                while (newMatrix.size() < 168 && addElem) {
+                Map<Matrix, String> pathsForAllMatrices = new HashMap<>();
+                pathsForAllMatrices.put(secondElem, "2");
+                pathsForAllMatrices.put(thirdElem, "3");
+                Map<Matrix, String> copyOfPaths = new HashMap<>(pathsForAllMatrices);
+                while (pathsForAllMatrices.size() < 168 && addElem) {
                     addElem = false;
                     for (Map.Entry<Matrix, String> mainElem :
-                            newMatrix.entrySet()) {
+                            pathsForAllMatrices.entrySet()) {
                         matrix1 = Matrix.multiply(mainElem.getKey(), secondElem);
                         matrix2 = Matrix.multiply(mainElem.getKey(), thirdElem);
-                        if (!diffMatrix.containsKey(matrix1)) {
-                            diffMatrix.put(matrix1, mainElem.getValue() + "2");
+                        if (!copyOfPaths.containsKey(matrix1)) {
+                            copyOfPaths.put(matrix1, mainElem.getValue() + "2");
                             addElem = true;
                         }
-                        if (!diffMatrix.containsKey(matrix2)) {
-                            diffMatrix.put(matrix2, mainElem.getValue() + "3");
+                        if (!copyOfPaths.containsKey(matrix2)) {
+                            copyOfPaths.put(matrix2, mainElem.getValue() + "3");
                             addElem = true;
                         }
                     }
-                    newMatrix.putAll(diffMatrix);
+                    pathsForAllMatrices.putAll(copyOfPaths);
                 }
-                if (newMatrix.size() == 168) {
-                    generatingMatrix.put(new Pair(secondElem, thirdElem), newMatrix);
-                    pairGeneratingMatrix.add(new Pair(secondElem, thirdElem));
+                if (pathsForAllMatrices.size() == 168) {
+                    generatorsAndPaths.put(new Pair(secondElem, thirdElem), pathsForAllMatrices);
+                    pairGenerators.add(new Pair(secondElem, thirdElem));
                 }
                 addElem = true;
             }
         }
 
         //нахождение классов скрученной сопряженности
-        Pair generate = pairGeneratingMatrix.get(0);
+        Pair generate = pairGenerators.get(0);
         System.out.println(generate.getFirst().toString() + generate.getSecond().toString());
-        System.out.println("Обратные: " + "\n");
-        System.out.println(generate.getFirst().inversion().toString() + generate.getSecond().inversion().toString());
-        System.out.println("Транспонированые: " + "\n");
-        System.out.println(generate.getFirst().transpose().toString() + generate.getSecond().transpose().toString());
         for (Pair replace :
-                pairGeneratingMatrix) {
+                pairGenerators) {
             if (!generate.equals(replace)) {
-                size = 0;
-                sizeList = -1;
-                otherMatr.addAll(group);
+                int size = 0;
+                otherMatrices.addAll(group);
                 conjugatedMatrix.clear();
                 System.out.println(replace.getFirst().toString() + replace.getSecond().toString());
-                System.out.println("Обратные: " + "\n");
-                System.out.println(
-                        replace.getFirst().inversion().toString() + replace.getSecond().inversion().toString());
-                System.out.println("Транспонированые: " + "\n");
-                System.out.println(
-                        replace.getFirst().transpose().toString() + replace.getSecond().transpose().toString());
-                while (size != 168) {
-                    matrix1 = otherMatr.get(0);
-                    sizeList++;
-                    conjugatedMatrix.add(sizeList, new ArrayList<Matrix>());
+                while (otherMatrices.size() != 0) {
+                    matrix1 = otherMatrices.get(0);
+                    conjugatedMatrix.add(size, new ArrayList<Matrix>());
 
                     for (Matrix h :
                             group) {
-                        String path = generatingMatrix.get(replace).get(h);
 
+                        //производим преобразование согласно полученному пути
+                        String path = generatorsAndPaths.get(replace).get(h);
                         Matrix conversion = unitMatrix;
                         for (int i = 0; i < path.length(); i++) {
                             if (path.charAt(i) == '2') {
@@ -118,45 +100,23 @@ public class Second {
                             }
                         }
 
+                        //ищем сопряженные элементы
                         Matrix newMatrix = Matrix.multiply(Matrix.multiply(conversion, matrix1), h.inversion());
-                        if (!conjugatedMatrix.get(sizeList).contains(newMatrix)) {
-                            conjugatedMatrix.get(sizeList).add(newMatrix);
+                        if (!conjugatedMatrix.get(size).contains(newMatrix)) {
+                            conjugatedMatrix.get(size).add(newMatrix);
                         }
                     }
-
-                    size += conjugatedMatrix.get(sizeList).size();
 
                     for (List<Matrix> h :
                             conjugatedMatrix) {
-                        for (Matrix m :
-                                h) {
-                            otherMatr.remove(m);
-                        }
+                        otherMatrices.removeAll(h);
                     }
-
+                    size++;
                 }
+
                 for (List<Matrix> h :
                         conjugatedMatrix) {
-                    for (Matrix m :
-                            h) {
-                        if (conjugatedMatrix.size() == 4) {
-                            if (m.getOrder() == 2) {
-                                secondOrder++;
-                            } else if (m.getOrder() == 3) {
-                                thirdOrder++;
-                            } else if (m.getOrder() == 4) {
-                                fourthOrder++;
-                            } else if (m.getOrder() == 7) {
-                                seventhOrder++;
-                            }
-                        }
-                    }
-                    if (conjugatedMatrix.size() == 4) {
-                        System.out.println("Второй порядок = " + secondOrder + " Третий порядок = " + thirdOrder +
-                                " Четвертый порядок = " + fourthOrder + " Седьмой порядок = " + seventhOrder +
-                                " Размер = " + h.size() + "\n");
-                        secondOrder = thirdOrder = fourthOrder = seventhOrder = 0;
-                    }
+                    System.out.println("Размер = " + h.size());
                 }
             }
         }
