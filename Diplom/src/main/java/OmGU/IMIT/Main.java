@@ -8,7 +8,8 @@ public class Main {
     public static void main(String[] args) {
         int size = 0;
         Matrix matrix1;
-        Matrix matrixH;
+        int[][] matrix = {{0, 0, 1}, {1, 1, 0}, {0, 1, 0}};
+        Matrix matrixH = new Matrix(matrix, 3);
         Random rand = new Random();
         List<Matrix> group = new ArrayList<>();
 
@@ -25,7 +26,6 @@ public class Main {
                 otherMatrix.add(other);
             }
         }
-        matrixH = otherMatrix.get(0);
         System.out.println(matrixH.toString() + "\n____________\n");
         while (size != 168) {
             matrix1 = otherMatrix.get(0);
@@ -44,11 +44,12 @@ public class Main {
 
             for (Matrix h :
                     group) {
-                Matrix newMatrix = Matrix.multiply(Matrix.multiply(Matrix.multiply(Matrix.multiply(matrixH.inversion(), h),
-                        matrixH), matrix1), h.inversion());
+                Matrix newMatrix = Matrix.multiply(Matrix.multiply(Matrix.multiply(Matrix.multiply(matrixH, h),
+                        matrixH.inversion()), matrix1), h.inversion());
                 if (!conjugatedMatrix.contains(newMatrix)) {
                     conjugatedMatrix.add(newMatrix);
-                    System.out.println(newMatrix.getOrder());
+                    System.out.println("порядок обычной матрицы: " + newMatrix.getOrder());
+                    System.out.println("порядок умноженной матрицы: " + Matrix.multiply(newMatrix, matrixH.inversion()).getOrder());
                 }
             }
 
