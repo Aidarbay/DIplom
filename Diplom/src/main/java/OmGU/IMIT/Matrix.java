@@ -1,7 +1,5 @@
 package OmGU.IMIT;
 
-import java.util.Arrays;
-
 public class Matrix {
     private int[][] matrix;
     private int size;
@@ -11,7 +9,7 @@ public class Matrix {
         this.matrix = matrix;
     }
 
-    Matrix(Matrix oldMatrix) {
+    private Matrix(Matrix oldMatrix) {
         size = oldMatrix.getSize();
         matrix = new int[oldMatrix.getSize()][oldMatrix.getSize()];
         for (int i = 0; i < size; i++) {

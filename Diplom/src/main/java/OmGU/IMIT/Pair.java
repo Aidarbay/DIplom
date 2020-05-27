@@ -5,10 +5,10 @@ import java.util.Objects;
 /**
  * Class for saved two elements in pair
  */
-public final class Pair {
+public final class Pair<T, U> {
 
-    private final Matrix first;
-    private final Matrix second;
+    private final T first;
+    private final U second;
 
     /**
      * Basic constructor saved type
@@ -16,16 +16,16 @@ public final class Pair {
      * @param first  type first element
      * @param second type second element
      */
-    Pair(final Matrix first, final Matrix second) {
+    Pair(final T first, final U second) {
         this.first = first;
         this.second = second;
     }
 
-    Matrix getFirst() {
+    T getFirst() {
         return first;
     }
 
-    public Matrix getSecond() {
+    U getSecond() {
         return second;
     }
 
