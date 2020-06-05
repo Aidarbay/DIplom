@@ -19,7 +19,11 @@ public class Second {
         for (Map.Entry<Pair<Pair<Matrix, Matrix>, Pair<Matrix, Matrix>>, List<List<Matrix>>> elem :
                 conjugatedMatrices.entrySet()) {
 
-            System.out.println("НОВЫЙ КЛАСС");
+            System.out.println(elem.getKey().getFirst().getFirst().toString());
+            System.out.println(elem.getKey().getFirst().getSecond().toString());
+            System.out.println("_______________________________________________");
+            System.out.println(elem.getKey().getSecond().getFirst().toString());
+            System.out.println(elem.getKey().getSecond().getSecond().toString());
             for (List<Matrix> set :
                     elem.getValue()) {
                 System.out.println("Размер = " + set.size());
@@ -109,8 +113,9 @@ public class Second {
         List<Matrix> otherMatrices = new ArrayList<>();
 
         Pair<Matrix, Matrix> generate = pairGenerators.get(0);
-        for (Pair<Matrix, Matrix> replace :
-                pairGenerators) {
+        //for (Pair<Matrix, Matrix> replace :
+                //pairGenerators) {
+        Pair<Matrix, Matrix> replace = pairGenerators.get(330);
             if (!generate.equals(replace)) {
                 int size = 0;
                 otherMatrices.addAll(group);
@@ -152,7 +157,7 @@ public class Second {
 
 
             }
-        }
+        //}
         return conjugatedMatrices;
     }
 }
