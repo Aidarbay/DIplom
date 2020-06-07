@@ -112,10 +112,9 @@ public class Second {
         Matrix unitMatrix = new Matrix(unitArray, 3);
         List<Matrix> otherMatrices = new ArrayList<>();
 
-        Pair<Matrix, Matrix> generate = pairGenerators.get(0);
-        //for (Pair<Matrix, Matrix> replace :
-                //pairGenerators) {
-        Pair<Matrix, Matrix> replace = pairGenerators.get(330);
+        Pair<Matrix, Matrix> replace = pairGenerators.get(0);
+        for (Pair<Matrix, Matrix> generate :
+                pairGenerators) {
             if (!generate.equals(replace)) {
                 int size = 0;
                 otherMatrices.addAll(group);
@@ -157,7 +156,7 @@ public class Second {
 
 
             }
-        //}
+        }
         return conjugatedMatrices;
     }
 }
