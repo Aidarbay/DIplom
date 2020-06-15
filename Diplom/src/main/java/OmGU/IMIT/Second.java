@@ -41,7 +41,7 @@ public class Second {
             int[][] matrix = {{rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
                     {rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
                     {rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)}};
-            Matrix other = new Matrix(matrix, 3);
+            Matrix other = new Matrix(matrix);
             if (other.determinant() == 1 && !group.contains(other)) {
                 group.add(other);
             }
@@ -109,7 +109,7 @@ public class Second {
     ) {
         Map<Pair<Pair<Matrix, Matrix>, Pair<Matrix, Matrix>>, List<List<Matrix>>> conjugatedMatrices = new HashMap<>();
         int[][] unitArray = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
-        Matrix unitMatrix = new Matrix(unitArray, 3);
+        Matrix unitMatrix = new Matrix(unitArray);
         List<Matrix> otherMatrices = new ArrayList<>();
 
         Pair<Matrix, Matrix> replace = pairGenerators.get(0);

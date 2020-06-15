@@ -4,8 +4,8 @@ public class Matrix {
     private int[][] matrix;
     private int size;
 
-    Matrix(int[][] matrix, int resize) {
-        this.size = resize;
+    Matrix(int[][] matrix) {
+        this.size = matrix.length;
         this.matrix = matrix;
     }
 
@@ -35,7 +35,7 @@ public class Matrix {
                         (matrix1.getElement(i, 2) * matrix2.getElement(2, j))) % 2;
             }
         }
-        return new Matrix(newMatrix, 3);
+        return new Matrix(newMatrix);
     }
 
     Matrix inversion() {
@@ -82,7 +82,7 @@ public class Matrix {
 
         }
 
-        return new Matrix(E, 3);
+        return new Matrix(E);
     }
 
     Matrix transpose() {
@@ -92,7 +92,7 @@ public class Matrix {
                 trans[j][i] = matrix[i][j];
             }
         }
-        return new Matrix(trans, 3);
+        return new Matrix(trans);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class Matrix {
     int getOrder() {
         int order = 1;
         int[][] unitArray = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
-        Matrix unitMatrix = new Matrix(unitArray, 3);
+        Matrix unitMatrix = new Matrix(unitArray);
         Matrix newMatrix = this;
         while (!newMatrix.equals(unitMatrix)) {
             newMatrix = multiply(newMatrix, this);

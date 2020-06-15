@@ -10,7 +10,7 @@ public class Main {
         int size = 0;
         Matrix matrix1;
         int[][] matrix = {{0, 0, 1}, {1, 1, 0}, {0, 1, 0}};
-        Matrix matrixH = new Matrix(matrix, 3);
+        Matrix matrixH = new Matrix(matrix);
         Random rand = new Random();
         List<Matrix> group = new ArrayList<>();
         List<Matrix> otherMatrix = new ArrayList<>();
@@ -21,7 +21,7 @@ public class Main {
             int[][] matrix2 = {{rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
                     {rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
                     {rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)}};
-            Matrix other = new Matrix(matrix2, 3);
+            Matrix other = new Matrix(matrix2);
             if (other.determinant() == 1 && !group.contains(other)) {
                 group.add(other);
             }
