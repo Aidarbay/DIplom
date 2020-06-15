@@ -1,29 +1,34 @@
 package OmGU.IMIT;
 
 public class Matrix {
-    private int[][] matrix;
+    private int[][] elements;
     private int size;
 
-    Matrix(int[][] matrix) {
-        this.size = matrix.length;
-        this.matrix = matrix;
+    Matrix(int[][] elements) {
+        this.size = elements.length;
+        this.elements = elements;
     }
 
     private Matrix(Matrix oldMatrix) {
         size = oldMatrix.getSize();
-        matrix = new int[oldMatrix.getSize()][oldMatrix.getSize()];
+        elements = new int[oldMatrix.getSize()][oldMatrix.getSize()];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                matrix[i][j] = oldMatrix.getElement(i, j);
+                elements[i][j] = oldMatrix.getElement(i, j);
             }
         }
     }
 
-    int determinant() {
-        return (matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1] * matrix[1][0] * matrix[2][2] +
-                matrix[0][0] * matrix[2][1] * matrix[1][2] + matrix[0][2] * matrix[1][1] * matrix[2][0] +
-                matrix[0][1] * matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[2][1] * matrix[1][0]) % 2;
+    int getDeterminant() {
+        if (size == 1) {
+            return elements[0][0];
+        } else {
+            //for (int i = 0; i < size; i++) { }
+            return (elements[0][0] * elements[1][1] * elements[2][2] + elements[0][1] * elements[1][0] * elements[2][2] +
+                elements[0][0] * elements[2][1] * elements[1][2] + elements[0][2] * elements[1][1] * elements[2][0] +
+                elements[0][1] * elements[1][2] * elements[2][0] + elements[0][2] * elements[2][1] * elements[1][0]) % 2;
 
+        }
     }
 
     static Matrix multiply(Matrix matrix1, Matrix matrix2) {
@@ -89,7 +94,7 @@ public class Matrix {
         int[][] trans = new int[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                trans[j][i] = matrix[i][j];
+                trans[j][i] = elements[i][j];
             }
         }
         return new Matrix(trans);
@@ -100,7 +105,7 @@ public class Matrix {
         StringBuilder str = new StringBuilder("");
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                str.append(matrix[i][j]).append(" ");
+                str.append(elements[i][j]).append(" ");
             }
             str.append("\n");
         }
@@ -112,7 +117,7 @@ public class Matrix {
         Matrix matrix1 = (Matrix) o;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (matrix[i][j] != matrix1.getElement(i, j)) {
+                if (elements[i][j] != matrix1.getElement(i, j)) {
                     return false;
                 }
             }
@@ -123,8 +128,9 @@ public class Matrix {
     @Override
     public int hashCode() {
         int result = 0;
-        int[] arr = {matrix[0][0], matrix[0][1], matrix[0][2], matrix[1][0], matrix[1][1], matrix[1][2], matrix[2][0],
-                matrix[2][1], matrix[2][2]};
+        int[] arr = {elements[0][0], elements[0][1], elements[0][2], elements[1][0], elements[1][1], elements[1][2],
+                elements[2][0],
+                elements[2][1], elements[2][2]};
         for (int i = 0; i < size * 3; i++) {
             if (arr[i] == 1) {
                 result += Math.pow(2, i);
@@ -150,10 +156,10 @@ public class Matrix {
     }
 
     private int getElement(int i, int j) {
-        return matrix[i][j];
+        return elements[i][j];
     }
 
     private void setElement(int i, int j, int element) {
-        matrix[i][j] = element;
+        elements[i][j] = element;
     }
 }

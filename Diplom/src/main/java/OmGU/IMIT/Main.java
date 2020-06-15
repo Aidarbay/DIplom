@@ -22,7 +22,7 @@ public class Main {
                     {rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)},
                     {rand.nextInt(2), rand.nextInt(2), rand.nextInt(2)}};
             Matrix other = new Matrix(matrix2);
-            if (other.determinant() == 1 && !group.contains(other)) {
+            if (other.getDeterminant() == 1 && !group.contains(other)) {
                 group.add(other);
             }
         }
