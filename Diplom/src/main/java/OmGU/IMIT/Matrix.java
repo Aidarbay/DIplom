@@ -20,14 +20,26 @@ public class Matrix {
     }
 
     int getDeterminant() {
+        Matrix minor;
+        int result = 0;
         if (size == 1) {
             return elements[0][0];
         } else {
-            //for (int i = 0; i < size; i++) { }
-            return (elements[0][0] * elements[1][1] * elements[2][2] + elements[0][1] * elements[1][0] * elements[2][2] +
-                elements[0][0] * elements[2][1] * elements[1][2] + elements[0][2] * elements[1][1] * elements[2][0] +
-                elements[0][1] * elements[1][2] * elements[2][0] + elements[0][2] * elements[2][1] * elements[1][0]) % 2;
-
+            for (int i = 0; i < size; i++) {
+                int[][] minorElements = new int[size - 1][size - 1];
+                for (int j = 1; j < size; j++) {
+                    for (int k = 0; k < size; k++) {
+                        if (k < i) {
+                            minorElements[j - 1][k] = elements[j][k];
+                        } else if (k > i) {
+                            minorElements[j - 1][k - 1] = elements[j][k];
+                        }
+                    }
+                }
+                minor = new Matrix(minorElements);
+                result = result + (int) Math.pow(-1, i) * elements[0][i] * minor.getDeterminant();
+            }
+            return result;
         }
     }
 

@@ -7,11 +7,13 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        int size = 0;
-        Matrix matrix1;
-        int[][] matrix = {{0, 0, 1}, {1, 1, 0}, {0, 1, 0}};
+        //int size = 0;
+        //Matrix matrix1;
+        int[][] matrix = {{2, 2, 1, 0}, {1, 1, 1, 1}, {0, 1, 1, 1}, {1, 1, 1, 1}};
         Matrix matrixH = new Matrix(matrix);
-        Random rand = new Random();
+        System.out.println(matrixH.toString() + "\n____________\n");
+        System.out.println(matrixH.getDeterminant());
+        /*Random rand = new Random();
         List<Matrix> group = new ArrayList<>();
         List<Matrix> otherMatrix = new ArrayList<>();
 
@@ -52,6 +54,6 @@ public class Main {
                     conjugatedMatrix) {
                 otherMatrix.remove(h);
             }
-        }
+        }*/
     }
 }
