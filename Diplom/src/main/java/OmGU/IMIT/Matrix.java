@@ -56,15 +56,15 @@ public class Matrix {
     }
 
     Matrix inversion() {
-        int[][] E = new int[size][size];
-        Matrix newMatrix = new Matrix(this);
+        int[][] elementsInverseMatrix = new int[size][size];
+        Matrix thisMatrix = new Matrix(this);
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                E[i][j] = 0;
+                elementsInverseMatrix[i][j] = 0;
 
                 if (i == j) {
-                    E[i][j] = 1;
+                    elementsInverseMatrix[i][j] = 1;
                 }
             }
         }
@@ -73,25 +73,25 @@ public class Matrix {
         for (int k = 0; k < size; k++) {
 
             for (int j = 0; j < size; j++) {
-                if (newMatrix.getElement(j, k) == 1) {
+                if (thisMatrix.getElement(j, k) == 1) {
                     index = j;
                 }
             }
-            if (k != index && newMatrix.getElement(k, k) != 1) {
+            if (k != index && thisMatrix.getElement(k, k) != 1) {
                 for (int j = 0; j < size; j++) {
-                    element = newMatrix.getElement(k, j);
-                    newMatrix.setElement(k, j, newMatrix.getElement(index, j));
-                    newMatrix.setElement(index, j, element);
-                    element = E[k][j];
-                    E[k][j] = E[index][j];
-                    E[index][j] = element;
+                    element = thisMatrix.getElement(k, j);
+                    thisMatrix.setElement(k, j, thisMatrix.getElement(index, j));
+                    thisMatrix.setElement(index, j, element);
+                    element = elementsInverseMatrix[k][j];
+                    elementsInverseMatrix[k][j] = elementsInverseMatrix[index][j];
+                    elementsInverseMatrix[index][j] = element;
                 }
             }
             for (int i = 0; i < size; i++) {
-                if (i != k && newMatrix.getElement(i, k) == 1) {
+                if (i != k && thisMatrix.getElement(i, k) == 1) {
                     for (int j = 0; j < size; j++) {
-                        newMatrix.setElement(i, j, (newMatrix.getElement(i, j) + newMatrix.getElement(k, j)) % 2);
-                        E[i][j] = (E[i][j] + E[k][j]) % 2;
+                        thisMatrix.setElement(i, j, (thisMatrix.getElement(i, j) + thisMatrix.getElement(k, j)) % 2);
+                        elementsInverseMatrix[i][j] = (elementsInverseMatrix[i][j] + elementsInverseMatrix[k][j]) % 2;
                     }
                 }
             }
@@ -99,7 +99,7 @@ public class Matrix {
 
         }
 
-        return new Matrix(E);
+        return new Matrix(elementsInverseMatrix);
     }
 
     Matrix transpose() {
