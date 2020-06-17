@@ -39,17 +39,17 @@ public class Matrix {
                 minor = new Matrix(minorElements);
                 result = result + (int) Math.pow(-1, i) * elements[0][i] * minor.getDeterminant();
             }
-            return result;
+            return Math.abs(result) % 2;
         }
     }
 
     static Matrix multiply(Matrix matrix1, Matrix matrix2) {
-        int[][] newMatrix = new int[3][3];
+        int[][] newMatrix = new int[matrix1.getSize()][matrix1.getSize()];
         for (int i = 0; i < matrix1.getSize(); i++) {
             for (int j = 0; j < matrix2.getSize(); j++) {
-                newMatrix[i][j] = ((matrix1.getElement(i, 0) * matrix2.getElement(0, j)) +
-                        (matrix1.getElement(i, 1) * matrix2.getElement(1, j)) +
-                        (matrix1.getElement(i, 2) * matrix2.getElement(2, j))) % 2;
+                for (int k = 0; k < matrix1.getSize(); k++) {
+                    newMatrix[i][j] = (newMatrix[i][j] + matrix1.getElement(i, k) * matrix2.getElement(k, j)) % 2;
+                }
             }
         }
         return new Matrix(newMatrix);

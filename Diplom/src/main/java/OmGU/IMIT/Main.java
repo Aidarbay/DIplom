@@ -8,11 +8,13 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         //int size = 0;
-        //Matrix matrix1;
-        int[][] matrix = {{2, 2, 1, 0}, {1, 1, 1, 1}, {0, 1, 1, 1}, {1, 1, 1, 1}};
-        Matrix matrixH = new Matrix(matrix);
-        System.out.println(matrixH.toString() + "\n____________\n");
-        System.out.println(matrixH.getDeterminant());
+        int[][] elementsSecondMatrix = {{0, 1, 0, 0}, {1, 1, 1, 0}, {1, 1, 1, 1}, {0, 1, 1, 1}};
+        Matrix secondMatrix = new Matrix(elementsSecondMatrix);
+        int[][] elementsFirstMatrix = {{1, 1, 0, 0}, {1, 1, 1, 0}, {1, 1, 1, 1}, {0, 1, 1, 1}};
+        Matrix firstMatrix = new Matrix(elementsFirstMatrix);
+        System.out.println(firstMatrix.toString() + "\n____________\n");
+        System.out.println(secondMatrix.toString() + "\n____________\n");
+        System.out.println(Matrix.multiply(firstMatrix,secondMatrix).toString() + "\n____________\n");
         /*Random rand = new Random();
         List<Matrix> group = new ArrayList<>();
         List<Matrix> otherMatrix = new ArrayList<>();
