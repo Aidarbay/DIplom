@@ -55,7 +55,7 @@ public class Matrix {
         return new Matrix(newMatrix);
     }
 
-    Matrix inversion() {
+    Matrix getInverseMatrix() {
         int[][] elementsInverseMatrix = new int[size][size];
         Matrix thisMatrix = new Matrix(this);
 
@@ -69,7 +69,7 @@ public class Matrix {
             }
         }
         int index = 0;
-        int element;
+        int placeForSubstitute;
         for (int k = 0; k < size; k++) {
 
             for (int j = 0; j < size; j++) {
@@ -79,12 +79,12 @@ public class Matrix {
             }
             if (k != index && thisMatrix.getElement(k, k) != 1) {
                 for (int j = 0; j < size; j++) {
-                    element = thisMatrix.getElement(k, j);
+                    placeForSubstitute = thisMatrix.getElement(k, j);
                     thisMatrix.setElement(k, j, thisMatrix.getElement(index, j));
-                    thisMatrix.setElement(index, j, element);
-                    element = elementsInverseMatrix[k][j];
+                    thisMatrix.setElement(index, j, placeForSubstitute);
+                    placeForSubstitute = elementsInverseMatrix[k][j];
                     elementsInverseMatrix[k][j] = elementsInverseMatrix[index][j];
-                    elementsInverseMatrix[index][j] = element;
+                    elementsInverseMatrix[index][j] = placeForSubstitute;
                 }
             }
             for (int i = 0; i < size; i++) {
@@ -102,7 +102,7 @@ public class Matrix {
         return new Matrix(elementsInverseMatrix);
     }
 
-    Matrix transpose() {
+    Matrix getTransposeMatrix() {
         int[][] trans = new int[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {

@@ -139,7 +139,7 @@ public class Second {
                         }
 
                         //ищем сопряженные элементы
-                        Matrix newMatrix = multiply(multiply(conversion, matrix1), h.inversion());
+                        Matrix newMatrix = multiply(multiply(conversion, matrix1), h.getInverseMatrix());
                         if (!conjugatedMatrix.get(size).contains(newMatrix)) {
                             conjugatedMatrix.get(size).add(newMatrix);
                         }
